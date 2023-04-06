@@ -18,7 +18,7 @@ class Message private constructor(
             id: UUID = UUID.randomUUID(),
             senderId: UUID,
             content: String,
-        ) = try {
+        ): Result = try {
             Created(
                 Message(
                     id = id,

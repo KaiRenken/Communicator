@@ -17,7 +17,7 @@ class Chat private constructor(
         operator fun invoke(
             id: UUID = UUID.randomUUID(),
             name: String,
-        ) = try {
+        ): Result = try {
             Created(
                 Chat(
                     id = id,
