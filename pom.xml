@@ -17,6 +17,7 @@
         <java.version>17</java.version>
         <kotlin.version>1.7.22</kotlin.version>
         <kotest-assertions-core-jvm.version>5.5.5</kotest-assertions-core-jvm.version>
+        <mockk-jvm.version>1.13.4</mockk-jvm.version>
     </properties>
     <dependencies>
         <dependency>
@@ -47,6 +48,12 @@
             <groupId>io.kotest</groupId>
             <artifactId>kotest-assertions-core-jvm</artifactId>
             <version>${kotest-assertions-core-jvm.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.mockk</groupId>
+            <artifactId>mockk-jvm</artifactId>
+            <version>${mockk-jvm.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

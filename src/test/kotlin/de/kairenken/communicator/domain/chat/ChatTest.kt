@@ -11,7 +11,13 @@ internal class ChatTest {
 
     @Test
     fun `without id`() {
-        val creationResult: Chat.Result = Chat(name = "test-name")
+        val memberId1 = UUID.randomUUID()
+        val memberId2 = UUID.randomUUID()
+
+        val creationResult: Chat.Result = Chat(
+            name = "test-name",
+            memberIds = listOf(memberId1, memberId2),
+        )
 
         creationResult.shouldBeInstanceOf<Chat.Created>()
         creationResult.chat.id.shouldBeInstanceOf<UUID>()
@@ -21,9 +27,13 @@ internal class ChatTest {
     @Test
     fun `with id`() {
         val id = UUID.randomUUID()
+        val memberId1 = UUID.randomUUID()
+        val memberId2 = UUID.randomUUID()
+
         val creationResult: Chat.Result = Chat(
             id = id,
             name = "test-name",
+            memberIds = listOf(memberId1, memberId2),
         )
 
         creationResult.shouldBeInstanceOf<Chat.Created>()
@@ -33,7 +43,13 @@ internal class ChatTest {
 
     @Test
     fun `with empty name`() {
-        val creationResult: Chat.Result = Chat(name = "")
+        val memberId1 = UUID.randomUUID()
+        val memberId2 = UUID.randomUUID()
+
+        val creationResult: Chat.Result = Chat(
+            name = "",
+            memberIds = listOf(memberId1, memberId2),
+        )
 
         creationResult.shouldBeInstanceOf<Chat.Error>()
         creationResult.msg shouldBe "Chat.name must not be empty"
@@ -41,7 +57,13 @@ internal class ChatTest {
 
     @Test
     fun `with blank name`() {
-        val creationResult: Chat.Result = Chat(name = "  ")
+        val memberId1 = UUID.randomUUID()
+        val memberId2 = UUID.randomUUID()
+
+        val creationResult: Chat.Result = Chat(
+            name = "  ",
+            memberIds = listOf(memberId1, memberId2),
+        )
 
         creationResult.shouldBeInstanceOf<Chat.Error>()
         creationResult.msg shouldBe "Chat.name must not be blank"
@@ -49,10 +71,28 @@ internal class ChatTest {
 
     @Test
     fun `with name too large`() {
+        val memberId1 = UUID.randomUUID()
+        val memberId2 = UUID.randomUUID()
+
         val creationResult: Chat.Result =
-            Chat(name = "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890")
+            Chat(
+                name = "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890",
+                memberIds = listOf(memberId1, memberId2),
+            )
 
         creationResult.shouldBeInstanceOf<Chat.Error>()
         creationResult.msg shouldBe "Chat.name must contain less that 100 characters"
+    }
+
+    @Test
+    fun `with memberIds empty`() {
+        val creationResult: Chat.Result =
+            Chat(
+                name = "test-name",
+                memberIds = emptyList()
+            )
+
+        creationResult.shouldBeInstanceOf<Chat.Error>()
+        creationResult.msg shouldBe "Chat.memberIds must not be empty"
     }
 }
