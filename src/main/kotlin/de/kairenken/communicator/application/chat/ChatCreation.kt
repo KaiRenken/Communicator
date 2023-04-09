@@ -15,26 +15,20 @@ class ChatCreation(private val chatRepository: ChatRepository) {
         name = name,
         memberIds = memberIds,
     )
-        .callRepositoryForStorage()
-        .buildResult()
+        .storeToDb()
 
     private fun createDomainObject(name: String, memberIds: List<UUID>): Chat.Result = Chat(
         name = name,
         memberIds = memberIds,
     )
 
-    private fun Chat.Result.buildResult(): Result = when (this) {
-        is Chat.Created -> Created(chat = this.chat)
-        is Chat.Error -> CreationError(msg = this.msg)
-    }
-
-    private fun Chat.Result.callRepositoryForStorage(): Chat.Result = when (this) {
+    private fun Chat.Result.storeToDb(): Result = when (this) {
         is Chat.Created -> {
-            chatRepository.store(this.chat)
-            this
+            chatRepository.store(chat = this.chat)
+            Created(chat = this.chat)
         }
 
-        is Chat.Error -> this
+        is Chat.Error -> CreationError(msg = this.msg)
     }
 
     sealed class Result

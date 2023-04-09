@@ -5,6 +5,7 @@ import java.util.*
 class Message private constructor(
     val id: UUID,
     val senderId: UUID,
+    val chatId: UUID,
     val content: String,
 ) {
 
@@ -17,12 +18,14 @@ class Message private constructor(
         operator fun invoke(
             id: UUID = UUID.randomUUID(),
             senderId: UUID,
+            chatId: UUID,
             content: String,
         ): Result = try {
             Created(
                 Message(
                     id = id,
                     senderId = senderId,
+                    chatId = chatId,
                     content = content,
                 )
             )

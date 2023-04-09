@@ -1,9 +1,10 @@
 package de.kairenken.communicator.application.chat
 
 import de.kairenken.communicator.domain.chat.ChatRepository
+import de.kairenken.communicator.matchers.shouldBeEqualTo
 import de.kairenken.communicator.testdatafactories.CHAT_MEMBER_IDS
 import de.kairenken.communicator.testdatafactories.CHAT_NAME
-import io.kotest.matchers.shouldBe
+import de.kairenken.communicator.testdatafactories.aTestChat
 import io.kotest.matchers.types.shouldBeInstanceOf
 import io.mockk.Called
 import io.mockk.justRun
@@ -13,7 +14,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
 @DisplayName("Create Chat")
-class ChatCreationTest {
+internal class ChatCreationTest {
 
     private val chatRepositoryMock: ChatRepository = mockk()
 
@@ -29,12 +30,10 @@ class ChatCreationTest {
         )
 
         result.shouldBeInstanceOf<ChatCreation.Created>()
-        result.chat.name shouldBe CHAT_NAME
-        result.chat.memberIds shouldBe CHAT_MEMBER_IDS
+        result.chat shouldBeEqualTo aTestChat()
         verify {
             chatRepositoryMock.store(withArg {
-                it.name shouldBe CHAT_NAME
-                it.memberIds shouldBe CHAT_MEMBER_IDS
+                it shouldBeEqualTo aTestChat()
             })
         }
     }
