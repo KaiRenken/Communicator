@@ -35,12 +35,12 @@ class ChatRestController(private val chatCreation: ChatCreation) {
         )
     }
 
-    private fun ChatCreation.Created.mapToReadChatDto() = ReadChatDto(
+    private fun ChatCreation.Created.mapToReadChatDto(): ReadChatDto = ReadChatDto(
         id = this.chat.id,
         name = this.chat.name,
         memberIds = this.chat.memberIds,
     )
 
-    private fun ChatCreation.CreationError.mapToErrorResponseDto() =
+    private fun ChatCreation.CreationError.mapToErrorResponseDto(): ErrorResponseDto =
         ErrorResponseDto(msg = this.msg)
 }
