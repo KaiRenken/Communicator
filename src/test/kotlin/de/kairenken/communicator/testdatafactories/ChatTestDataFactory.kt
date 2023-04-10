@@ -1,6 +1,8 @@
 package de.kairenken.communicator.testdatafactories
 
 import de.kairenken.communicator.domain.chat.Chat
+import de.kairenken.communicator.infrastructure.chat.repository.model.ChatEntity
+import de.kairenken.communicator.infrastructure.chat.repository.model.MemberEntity
 import de.kairenken.communicator.infrastructure.chat.rest.model.CreateChatDto
 import de.kairenken.communicator.infrastructure.chat.rest.model.ReadChatDto
 import org.json.JSONArray
@@ -10,6 +12,10 @@ import java.util.*
 val CHAT_ID = UUID.randomUUID()
 val CHAT_NAME = "test-name"
 val CHAT_MEMBER_IDS = listOf<UUID>(UUID.randomUUID(), UUID.randomUUID())
+val CHAT_MEMBER_ENTITIES = listOf<MemberEntity>(
+    MemberEntity(CHAT_MEMBER_IDS[0]),
+    MemberEntity(CHAT_MEMBER_IDS[1]),
+)
 
 fun aTestChat(
     id: UUID = CHAT_ID,
@@ -22,6 +28,16 @@ fun aTestChat(
             memberIds = memberIds
         ) as Chat.Created
         ).chat
+
+fun aTestChatEntity(
+    id: UUID = CHAT_ID,
+    name: String = CHAT_NAME,
+    members: List<MemberEntity> = CHAT_MEMBER_ENTITIES,
+): ChatEntity = ChatEntity(
+    id = id,
+    name = name,
+    members = members,
+)
 
 fun aTestCreateChatDto(
     name: String = CHAT_NAME,
