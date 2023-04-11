@@ -21,7 +21,7 @@ abstract class AbstractDatabaseTest {
 
     @BeforeEach
     protected fun tearDown() {
-        chatJpaRepository.deleteAll()
         messageJpaRepository.deleteAll()
+        chatJpaRepository.deleteAll()
     }
 }

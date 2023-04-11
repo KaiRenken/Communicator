@@ -1,6 +1,8 @@
 package de.kairenken.communicator.infrastructure.message.repository
 
 import de.kairenken.communicator.testcontainers.AbstractDatabaseTest
+import de.kairenken.communicator.testdatafactories.MESSAGE_ID
+import de.kairenken.communicator.testdatafactories.aTestChatEntity
 import de.kairenken.communicator.testdatafactories.aTestMessage
 import de.kairenken.communicator.testdatafactories.aTestMessageEntity
 import io.kotest.matchers.equality.shouldBeEqualToComparingFields
@@ -17,12 +19,11 @@ class MessageRepositoryImplTest : AbstractDatabaseTest() {
 
     @Test
     fun `store message succcessfully`() {
-        val messageToStore = aTestMessage()
-
-        messageRepositoryImplToTest.store(message = messageToStore)
+        chatJpaRepository.save(aTestChatEntity())
+        messageRepositoryImplToTest.store(message = aTestMessage())
 
         messageJpaRepository.count() shouldBe 1
-        val storedMessage = messageJpaRepository.findById(messageToStore.id)
+        val storedMessage = messageJpaRepository.findById(MESSAGE_ID)
         storedMessage.get() shouldBeEqualToComparingFields aTestMessageEntity()
     }
 }

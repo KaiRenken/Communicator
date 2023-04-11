@@ -17,6 +17,5 @@ create table message
     sender_id   uuid not null,
     chat_id     uuid not null,
     content     varchar(1024) not null,
-    constraint fk_message_chat_id foreign key(chat_id) references chat(id),
-    constraint fk_message_sender_id foreign key(sender_id) references member(id)
+    constraint fk_message_chat_id foreign key(chat_id) references chat(id)
 );
