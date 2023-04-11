@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository
 import java.util.*
 
 @Repository
-interface MessageJpaRepository : JpaRepository<MessageEntity, UUID>
+interface MessageJpaRepository : JpaRepository<MessageEntity, UUID> {
+
+    fun findAllByChatId(chatId: UUID): List<MessageEntity>
+}

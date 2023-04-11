@@ -4,6 +4,7 @@ import de.kairenken.communicator.domain.message.Message
 import de.kairenken.communicator.domain.message.MessageRepository
 import de.kairenken.communicator.infrastructure.message.repository.model.MessageEntity
 import org.springframework.stereotype.Repository
+import java.util.*
 
 @Repository
 class MessageRepositoryImpl(private val messageJpaRepository: MessageJpaRepository) : MessageRepository {
@@ -11,6 +12,10 @@ class MessageRepositoryImpl(private val messageJpaRepository: MessageJpaReposito
     override fun store(message: Message) = message
         .mapToEntity()
         .storeToDb()
+
+    override fun findAllByChatId(chatId: UUID): List<Message> = messageJpaRepository
+        .findAllByChatId(chatId = chatId)
+        .map { it.toDomain() }
 
     private fun Message.mapToEntity(): MessageEntity = MessageEntity(
         id = this.id,
@@ -21,4 +26,12 @@ class MessageRepositoryImpl(private val messageJpaRepository: MessageJpaReposito
     private fun MessageEntity.storeToDb() {
         messageJpaRepository.save(this)
     }
+
+    private fun MessageEntity.toDomain() = (
+            Message(
+                id = this.id,
+                chatId = this.chatId,
+                content = this.content,
+            ) as Message.Created
+            ).message
 }
