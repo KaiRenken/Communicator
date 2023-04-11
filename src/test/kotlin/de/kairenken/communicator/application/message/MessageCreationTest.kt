@@ -5,7 +5,6 @@ import de.kairenken.communicator.domain.message.MessageRepository
 import de.kairenken.communicator.matchers.shouldBeEqualTo
 import de.kairenken.communicator.testdatafactories.CHAT_ID
 import de.kairenken.communicator.testdatafactories.MESSAGE_CONTENT
-import de.kairenken.communicator.testdatafactories.MESSAGE_SENDER_ID
 import de.kairenken.communicator.testdatafactories.aTestMessage
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
@@ -31,7 +30,6 @@ internal class MessageCreationTest {
         justRun { messageRepositoryMock.store(any()) }
 
         val result = messageCreationToTest.createMessage(
-            senderId = MESSAGE_SENDER_ID,
             chatId = CHAT_ID,
             content = MESSAGE_CONTENT,
         )
@@ -49,7 +47,6 @@ internal class MessageCreationTest {
     @Test
     fun `with bad argument`() {
         val result = messageCreationToTest.createMessage(
-            senderId = MESSAGE_SENDER_ID,
             chatId = CHAT_ID,
             content = "",
         )
@@ -64,7 +61,6 @@ internal class MessageCreationTest {
         every { chatRefRepositoryMock.existsById(CHAT_ID) } returns false
 
         val result = messageCreationToTest.createMessage(
-            senderId = MESSAGE_SENDER_ID,
             chatId = CHAT_ID,
             content = MESSAGE_CONTENT,
         )

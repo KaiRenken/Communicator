@@ -14,9 +14,6 @@ class MessageEntity(
     @Column(name = "id")
     val id: UUID,
 
-    @Column(name = "sender_id")
-    val senderId: UUID,
-
     @Column(name = "chat_id")
     val chatId: UUID,
 

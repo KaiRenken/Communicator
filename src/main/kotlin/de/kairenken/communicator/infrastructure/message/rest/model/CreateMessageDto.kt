@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.*
 
 class CreateMessageDto(
-    @JsonProperty(required = true) val senderId: UUID,
     @JsonProperty(required = true) val chatId: UUID,
     @JsonProperty(required = true) val content: String,
 )

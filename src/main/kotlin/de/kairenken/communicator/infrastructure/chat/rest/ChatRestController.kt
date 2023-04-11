@@ -24,7 +24,6 @@ class ChatRestController(private val chatCreation: ChatCreation) {
     private fun CreateChatDto.callUseCase(): ChatCreation.Result =
         chatCreation.createChat(
             name = this.name,
-            memberIds = this.memberIds,
         )
 
     private fun ChatCreation.Result.wrapInResponse(): ResponseEntity<out Any> = when (this) {
@@ -38,7 +37,6 @@ class ChatRestController(private val chatCreation: ChatCreation) {
     private fun ChatCreation.Created.mapToReadChatDto(): ReadChatDto = ReadChatDto(
         id = this.chat.id,
         name = this.chat.name,
-        memberIds = this.chat.memberIds,
     )
 
     private fun ChatCreation.CreationError.mapToErrorResponseDto(): ErrorResponseDto =

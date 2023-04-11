@@ -14,7 +14,6 @@ class MessageRepositoryImpl(private val messageJpaRepository: MessageJpaReposito
 
     private fun Message.mapToEntity(): MessageEntity = MessageEntity(
         id = this.id,
-        senderId = this.senderId,
         chatId = this.chatId,
         content = this.content,
     )

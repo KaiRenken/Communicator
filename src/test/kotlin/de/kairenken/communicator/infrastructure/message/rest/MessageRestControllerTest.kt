@@ -32,7 +32,6 @@ internal class MessageRestControllerTest {
         fun successfully() {
             every {
                 messageCreationMock.createMessage(
-                    senderId = MESSAGE_SENDER_ID,
                     chatId = CHAT_ID,
                     content = MESSAGE_CONTENT,
                 )
@@ -53,7 +52,6 @@ internal class MessageRestControllerTest {
 
             every {
                 messageCreationMock.createMessage(
-                    senderId = MESSAGE_SENDER_ID,
                     chatId = CHAT_ID,
                     content = badContent,
                 )
@@ -72,7 +70,6 @@ internal class MessageRestControllerTest {
         fun `with non-existing chat`() {
             every {
                 messageCreationMock.createMessage(
-                    senderId = MESSAGE_SENDER_ID,
                     chatId = CHAT_ID,
                     content = MESSAGE_CONTENT,
                 )

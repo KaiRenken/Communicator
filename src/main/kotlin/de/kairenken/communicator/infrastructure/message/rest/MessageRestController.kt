@@ -25,7 +25,6 @@ class MessageRestController(
 
     private fun CreateMessageDto.callUseCase(): MessageCreation.Result =
         messageCreation.createMessage(
-            senderId = this.senderId,
             chatId = this.chatId,
             content = this.content,
         )
@@ -44,7 +43,6 @@ class MessageRestController(
 
     private fun MessageCreation.Created.mapToReadMessageDto(): ReadMessageDto = ReadMessageDto(
         id = this.message.id,
-        senderId = this.message.senderId,
         chatId = this.message.chatId,
         content = this.message.content,
     )

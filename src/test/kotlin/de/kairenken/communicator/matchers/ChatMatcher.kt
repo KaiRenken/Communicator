@@ -7,5 +7,4 @@ import io.kotest.matchers.shouldBe
 
 infix fun Chat.shouldBeEqualTo(other: Chat) {
     this.name shouldBe other.name
-    this.memberIds shouldBe other.memberIds
 }

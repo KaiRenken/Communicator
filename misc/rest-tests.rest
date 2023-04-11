@@ -5,11 +5,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "name": "",
-  "memberIds": [
-    "4235c820-d82d-11ed-afa1-0242ac120002",
-    "2591c2ff-7ed6-4d96-94db-e7982da1280b"
-  ]
+  "name": ""
 }
 
 > {%
@@ -26,20 +22,13 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "name": "test-chat",
-  "memberIds": [
-    "4235c820-d82d-11ed-afa1-0242ac120002",
-    "2591c2ff-7ed6-4d96-94db-e7982da1280b"
-  ]
+  "name": "test-chat"
 }
 
 > {%
     client.test("Request executed successfully", function () {
         client.assert(response.status === 201);
         client.assert(response.body.name === "test-chat");
-        client.assert(response.body.memberIds.length === 2);
-        client.assert(response.body.memberIds[0] === "4235c820-d82d-11ed-afa1-0242ac120002");
-        client.assert(response.body.memberIds[1] === "2591c2ff-7ed6-4d96-94db-e7982da1280b");
     });
 
     client.global.set("chat-id", response.body.id)
@@ -52,7 +41,6 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "senderId": "4235c820-d82d-11ed-afa1-0242ac120002",
   "chatId": "{{chat-id}}",
   "content": ""
 }
@@ -71,7 +59,6 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "senderId": "4235c820-d82d-11ed-afa1-0242ac120002",
   "chatId": "2147aad6-d830-11ed-afa1-0242ac120002",
   "content": "test-content"
 }
@@ -90,7 +77,6 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "senderId": "4235c820-d82d-11ed-afa1-0242ac120002",
   "chatId": "{{chat-id}}",
   "content": "test-content"
 }
@@ -98,7 +84,6 @@ Content-Type: application/json
 > {%
     client.test("Request executed successfully", function () {
         client.assert(response.status === 201);
-        client.assert(response.body.senderId === "4235c820-d82d-11ed-afa1-0242ac120002");
         client.assert(response.body.content === "test-content");
     });
 

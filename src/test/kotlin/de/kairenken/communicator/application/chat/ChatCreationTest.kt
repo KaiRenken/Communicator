@@ -2,7 +2,6 @@ package de.kairenken.communicator.application.chat
 
 import de.kairenken.communicator.domain.chat.ChatRepository
 import de.kairenken.communicator.matchers.shouldBeEqualTo
-import de.kairenken.communicator.testdatafactories.CHAT_MEMBER_IDS
 import de.kairenken.communicator.testdatafactories.CHAT_NAME
 import de.kairenken.communicator.testdatafactories.aTestChat
 import io.kotest.matchers.types.shouldBeInstanceOf
@@ -26,7 +25,6 @@ internal class ChatCreationTest {
 
         val result = chatCreationToTest.createChat(
             name = CHAT_NAME,
-            memberIds = CHAT_MEMBER_IDS
         )
 
         result.shouldBeInstanceOf<ChatCreation.Created>()
@@ -42,7 +40,6 @@ internal class ChatCreationTest {
     fun `with bad argument`() {
         val result = chatCreationToTest.createChat(
             name = "",
-            memberIds = CHAT_MEMBER_IDS
         )
 
         result.shouldBeInstanceOf<ChatCreation.CreationError>()

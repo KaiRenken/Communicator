@@ -4,7 +4,6 @@ import java.util.*
 
 class ReadMessageDto(
     val id: UUID,
-    val senderId: UUID,
     val chatId: UUID,
     val content: String,
 )

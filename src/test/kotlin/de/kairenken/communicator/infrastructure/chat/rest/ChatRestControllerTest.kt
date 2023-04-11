@@ -33,7 +33,6 @@ internal class ChatRestControllerTest {
             every {
                 chatCreationMock.createChat(
                     name = CHAT_NAME,
-                    memberIds = CHAT_MEMBER_IDS,
                 )
             } returns ChatCreation.Created(aTestChat())
 
@@ -53,7 +52,6 @@ internal class ChatRestControllerTest {
             every {
                 chatCreationMock.createChat(
                     name = badName,
-                    memberIds = CHAT_MEMBER_IDS,
                 )
             } returns ChatCreation.CreationError(msg = ERROR_MSG)
 

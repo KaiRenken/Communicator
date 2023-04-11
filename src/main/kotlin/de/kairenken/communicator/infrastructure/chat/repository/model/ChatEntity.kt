@@ -13,8 +13,4 @@ class ChatEntity(
 
     @Column(name = "name")
     val name: String,
-
-    @OneToMany(cascade = [CascadeType.ALL])
-    @JoinColumn(name = "chat_id", referencedColumnName = "id", nullable = false)
-    val members: List<MemberEntity>
 )

@@ -13,11 +13,9 @@ class MessageCreation(
 ) {
 
     fun createMessage(
-        senderId: UUID,
         chatId: UUID,
         content: String,
     ): Result = createDomainObject(
-        senderId = senderId,
         chatId = chatId,
         content = content,
     )
@@ -25,11 +23,9 @@ class MessageCreation(
         .storeToDb()
 
     private fun createDomainObject(
-        senderId: UUID,
         chatId: UUID,
         content: String
     ): Message.Result = Message(
-        senderId = senderId,
         chatId = chatId,
         content = content,
     )
