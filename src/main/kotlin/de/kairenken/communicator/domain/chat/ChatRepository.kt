@@ -9,4 +9,6 @@ interface ChatRepository {
     fun store(chat: Chat)
 
     fun existsById(chatId: UUID): Boolean
+
+    fun findAll(): List<Chat>
 }

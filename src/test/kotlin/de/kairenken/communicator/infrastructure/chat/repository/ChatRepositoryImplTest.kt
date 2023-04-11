@@ -1,17 +1,22 @@
 package de.kairenken.communicator.infrastructure.chat.repository
 
+import de.kairenken.communicator.matchers.shouldBeEqualTo
 import de.kairenken.communicator.testcontainers.AbstractDatabaseTest
 import de.kairenken.communicator.testdatafactories.CHAT_ID
 import de.kairenken.communicator.testdatafactories.aTestChat
 import de.kairenken.communicator.testdatafactories.aTestChatEntity
+import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.equality.shouldBeEqualToComparingFields
 import io.kotest.matchers.shouldBe
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Import
 
 @Import(value = [ChatRepositoryImpl::class])
-class ChatRepositoryImplTest : AbstractDatabaseTest() {
+internal class ChatRepositoryImplTest : AbstractDatabaseTest() {
 
     @Autowired
     protected lateinit var chatRepositoryImplToTest: ChatRepositoryImpl
@@ -27,15 +32,44 @@ class ChatRepositoryImplTest : AbstractDatabaseTest() {
         storedChat.get() shouldBeEqualToComparingFields aTestChatEntity()
     }
 
-    @Test
-    fun `check if chat exists by id which exists`() {
-        chatJpaRepository.save(aTestChatEntity())
+    @Nested
+    @DisplayName("Check if chat exists by id")
+    inner class CheckIfChatExistsByIdTest {
 
-        chatRepositoryImplToTest.existsById(CHAT_ID) shouldBe true
+        @Test
+        fun `which exists`() {
+            chatJpaRepository.save(aTestChatEntity())
+
+            chatRepositoryImplToTest.existsById(CHAT_ID) shouldBe true
+        }
+
+        @Test
+        fun `which does not exist`() {
+            chatRepositoryImplToTest.existsById(CHAT_ID) shouldBe false
+        }
     }
 
-    @Test
-    fun `check if chat exists by id which does not exist`() {
-        chatRepositoryImplToTest.existsById(CHAT_ID) shouldBe false
+    @Nested
+    @DisplayName("Find all chats")
+    inner class FindAllChatsTest {
+
+        @Test
+        fun successfully() {
+            chatJpaRepository.save(aTestChatEntity())
+
+            val result = chatRepositoryImplToTest.findAll()
+
+            result shouldHaveSize 1
+            result[0] shouldBeEqualTo aTestChat()
+        }
+
+        @Test
+        fun `with bad name`() {
+            chatJpaRepository.save(aTestChatEntity(name = ""))
+
+            shouldThrow<ClassCastException> {
+                chatRepositoryImplToTest.findAll()
+            }
+        }
     }
 }

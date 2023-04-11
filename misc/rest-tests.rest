@@ -34,6 +34,18 @@ Content-Type: application/json
     client.global.set("chat-id", response.body.id)
 %}
 
+### Get all chats
+
+GET http://localhost:8080/api/chat
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200);
+        client.assert(response.body.length === 1);
+        client.assert(response.body[0].name === "test-chat");
+    });
+%}
+
 ### Create new message with bad argument
 
 POST http://localhost:8080/api/message
