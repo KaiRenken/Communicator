@@ -1,0 +1,106 @@
+### Create new chat with bad argument
+
+POST http://localhost:8080/api/chat
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "",
+  "memberIds": [
+    "4235c820-d82d-11ed-afa1-0242ac120002",
+    "2591c2ff-7ed6-4d96-94db-e7982da1280b"
+  ]
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 400);
+        client.assert(response.body.msg === "Chat.name must not be empty");
+    });
+%}
+
+### Create new chat successfully
+
+POST http://localhost:8080/api/chat
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "test-chat",
+  "memberIds": [
+    "4235c820-d82d-11ed-afa1-0242ac120002",
+    "2591c2ff-7ed6-4d96-94db-e7982da1280b"
+  ]
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 201);
+        client.assert(response.body.name === "test-chat");
+        client.assert(response.body.memberIds.length === 2);
+        client.assert(response.body.memberIds[0] === "4235c820-d82d-11ed-afa1-0242ac120002");
+        client.assert(response.body.memberIds[1] === "2591c2ff-7ed6-4d96-94db-e7982da1280b");
+    });
+
+    client.global.set("chat-id", response.body.id)
+%}
+
+### Create new message with bad argument
+
+POST http://localhost:8080/api/message
+Accept: application/json
+Content-Type: application/json
+
+{
+  "senderId": "4235c820-d82d-11ed-afa1-0242ac120002",
+  "chatId": "{{chat-id}}",
+  "content": ""
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 400);
+        client.assert(response.body.msg === "Message.content must not be empty");
+    });
+%}
+
+### Create new message with non-existing chat
+
+POST http://localhost:8080/api/message
+Accept: application/json
+Content-Type: application/json
+
+{
+  "senderId": "4235c820-d82d-11ed-afa1-0242ac120002",
+  "chatId": "2147aad6-d830-11ed-afa1-0242ac120002",
+  "content": "test-content"
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 404);
+        client.assert(response.body.msg === "Chat with id 2147aad6-d830-11ed-afa1-0242ac120002 does not exist");
+    });
+%}
+
+### Create new message successfully
+
+POST http://localhost:8080/api/message
+Accept: application/json
+Content-Type: application/json
+
+{
+  "senderId": "4235c820-d82d-11ed-afa1-0242ac120002",
+  "chatId": "{{chat-id}}",
+  "content": "test-content"
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 201);
+        client.assert(response.body.senderId === "4235c820-d82d-11ed-afa1-0242ac120002");
+        client.assert(response.body.content === "test-content");
+    });
+
+    client.global.set("message-id", response.body.id)
+%}
