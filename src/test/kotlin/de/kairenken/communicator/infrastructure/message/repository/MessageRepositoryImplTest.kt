@@ -3,7 +3,6 @@ package de.kairenken.communicator.infrastructure.message.repository
 import de.kairenken.communicator.matchers.shouldBeEqualTo
 import de.kairenken.communicator.testcontainers.AbstractDatabaseTest
 import de.kairenken.communicator.testdatafactories.*
-import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.equality.shouldBeEqualToComparingFields
 import io.kotest.matchers.shouldBe
@@ -42,16 +41,6 @@ internal class MessageRepositoryImplTest : AbstractDatabaseTest() {
 
             result shouldHaveSize 1
             result[0] shouldBeEqualTo aTestMessage()
-        }
-
-        @Test
-        fun `with bad content`() {
-            chatJpaRepository.save(aTestChatEntity())
-            messageJpaRepository.save(aTestMessageEntity(content = ""))
-
-            shouldThrow<ClassCastException> {
-                messageRepositoryImplToTest.findAllByChatId(CHAT_ID)
-            }
         }
     }
 }

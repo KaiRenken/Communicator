@@ -1,5 +1,6 @@
 package de.kairenken.communicator.domain.message
 
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 import org.junit.jupiter.api.DisplayName
@@ -12,52 +13,50 @@ internal class MessageTest {
     @Test
     fun `without id`() {
         val chatId = UUID.randomUUID()
-        val creationResult: Message.Result = Message(
+        val createdMessage = Message(
             chatId = chatId,
             content = "test-content"
         )
 
-        creationResult.shouldBeInstanceOf<Message.Created>()
-        creationResult.message.id.shouldBeInstanceOf<UUID>()
-        creationResult.message.chatId shouldBe chatId
-        creationResult.message.content shouldBe "test-content"
+        createdMessage.id.shouldBeInstanceOf<UUID>()
+        createdMessage.chatId shouldBe chatId
+        createdMessage.content shouldBe "test-content"
     }
 
     @Test
     fun `with id`() {
         val id = UUID.randomUUID()
         val chatId = UUID.randomUUID()
-        val creationResult: Message.Result = Message(
+        val createdMessage = Message(
             id = id,
             chatId = chatId,
             content = "test-content"
         )
 
-        creationResult.shouldBeInstanceOf<Message.Created>()
-        creationResult.message.id shouldBe id
-        creationResult.message.chatId shouldBe chatId
-        creationResult.message.content shouldBe "test-content"
+        createdMessage.id shouldBe id
+        createdMessage.chatId shouldBe chatId
+        createdMessage.content shouldBe "test-content"
     }
 
     @Test
     fun `with empty content`() {
-        val creationResult: Message.Result = Message(
-            chatId = UUID.randomUUID(),
-            content = "",
-        )
-
-        creationResult.shouldBeInstanceOf<Message.Error>()
-        creationResult.msg shouldBe "Message.content must not be empty"
+        shouldThrow<MessageInstantiationException> {
+            Message(
+                chatId = UUID.randomUUID(),
+                content = "",
+            )
+        }
+            .msg shouldBe "Message.content must not be empty"
     }
 
     @Test
-    fun `with blank name`() {
-        val creationResult: Message.Result = Message(
-            chatId = UUID.randomUUID(),
-            content = "  ",
-        )
-
-        creationResult.shouldBeInstanceOf<Message.Error>()
-        creationResult.msg shouldBe "Message.content must not be blank"
+    fun `with blank content`() {
+        shouldThrow<MessageInstantiationException> {
+            Message(
+                chatId = UUID.randomUUID(),
+                content = "  ",
+            )
+        }
+            .msg shouldBe "Message.content must not be blank"
     }
 }

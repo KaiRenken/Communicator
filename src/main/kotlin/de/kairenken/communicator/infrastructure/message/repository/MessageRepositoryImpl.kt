@@ -27,11 +27,9 @@ class MessageRepositoryImpl(private val messageJpaRepository: MessageJpaReposito
         messageJpaRepository.save(this)
     }
 
-    private fun MessageEntity.toDomain() = (
-            Message(
-                id = this.id,
-                chatId = this.chatId,
-                content = this.content,
-            ) as Message.Created
-            ).message
+    private fun MessageEntity.toDomain() = Message(
+        id = this.id,
+        chatId = this.chatId,
+        content = this.content,
+    )
 }

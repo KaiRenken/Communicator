@@ -13,12 +13,11 @@ val CHAT_NAME = "test-name"
 fun aTestChat(
     id: UUID = CHAT_ID,
     name: String = CHAT_NAME,
-): Chat = (
-        Chat(
-            id = id,
-            name = name,
-        ) as Chat.Created
-        ).chat
+): Chat = Chat(
+    id = id,
+    name = name,
+)
+
 
 fun aTestChatEntity(
     id: UUID = CHAT_ID,

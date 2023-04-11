@@ -9,25 +9,18 @@ class ChatCreation(private val chatRepository: ChatRepository) {
 
     fun createChat(
         name: String,
-    ): Result = createDomainObject(
+    ): Chat = createDomainObject(
         name = name,
     )
         .storeToDb()
 
-    private fun createDomainObject(name: String): Chat.Result = Chat(
+    private fun createDomainObject(name: String): Chat = Chat(
         name = name,
     )
 
-    private fun Chat.Result.storeToDb(): Result = when (this) {
-        is Chat.Created -> {
-            chatRepository.store(chat = this.chat)
-            Created(chat = this.chat)
-        }
+    private fun Chat.storeToDb(): Chat {
+        chatRepository.store(chat = this)
 
-        is Chat.Error -> CreationError(msg = this.msg)
+        return this
     }
-
-    sealed class Result
-    class Created(val chat: Chat) : Result()
-    class CreationError(val msg: String) : Result()
 }

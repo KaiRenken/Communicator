@@ -1,5 +1,6 @@
 package de.kairenken.communicator.application.message
 
+import de.kairenken.communicator.application.message.exceptions.ChatDoesNotExistException
 import de.kairenken.communicator.domain.message.ChatRefRepository
 import de.kairenken.communicator.domain.message.Message
 import de.kairenken.communicator.domain.message.MessageRepository
@@ -12,17 +13,17 @@ class MessageRetrieval(
     private val chatRefRepository: ChatRefRepository,
 ) {
 
-    fun retrieveAllMessagesByChatId(chatId: UUID): Result {
-        if (!chatRefRepository.existsById(chatId = chatId)) {
-            return ChatDoesNotExist(chatId = chatId)
+    fun retrieveMessagesFromChat(chatId: UUID): List<Message> = chatId
+        .checkIfChatExists()
+        .retrieveMessages()
+
+    private fun UUID.checkIfChatExists(): UUID {
+        if (!chatRefRepository.existsById(this)) {
+            throw ChatDoesNotExistException(this)
         }
 
-        return Retrieved(
-            messages = messageRepository.findAllByChatId(chatId)
-        )
+        return this
     }
 
-    sealed class Result
-    class Retrieved(val messages: List<Message>) : Result()
-    class ChatDoesNotExist(val chatId: UUID) : Result()
+    private fun UUID.retrieveMessages(): List<Message> = messageRepository.findAllByChatId(this)
 }

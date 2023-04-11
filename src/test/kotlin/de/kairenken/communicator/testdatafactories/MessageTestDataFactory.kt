@@ -15,13 +15,11 @@ fun aTestMessage(
     id: UUID = MESSAGE_ID,
     chatId: UUID = CHAT_ID,
     content: String = MESSAGE_CONTENT,
-): Message = (
-        Message(
-            id = id,
-            chatId = chatId,
-            content = content,
-        ) as Message.Created
-        ).message
+): Message = Message(
+    id = id,
+    chatId = chatId,
+    content = content,
+)
 
 fun aTestMessageEntity(
     id: UUID = MESSAGE_ID,

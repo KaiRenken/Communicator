@@ -17,19 +17,15 @@ class Chat private constructor(
         operator fun invoke(
             id: UUID = UUID.randomUUID(),
             name: String,
-        ): Result = try {
-            Created(
-                Chat(
-                    id = id,
-                    name = name,
-                )
+        ): Chat = try {
+            Chat(
+                id = id,
+                name = name,
             )
         } catch (exception: IllegalArgumentException) {
-            Error(exception.message!!)
+            throw ChatInstantiationException(msg = exception.message!!)
         }
     }
-
-    sealed class Result
-    class Created(val chat: Chat) : Result()
-    class Error(val msg: String) : Result()
 }
+
+class ChatInstantiationException(val msg: String) : Exception()

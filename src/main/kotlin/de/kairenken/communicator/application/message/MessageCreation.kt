@@ -1,5 +1,6 @@
 package de.kairenken.communicator.application.message
 
+import de.kairenken.communicator.application.message.exceptions.ChatDoesNotExistException
 import de.kairenken.communicator.domain.message.ChatRefRepository
 import de.kairenken.communicator.domain.message.Message
 import de.kairenken.communicator.domain.message.MessageRepository
@@ -15,44 +16,24 @@ class MessageCreation(
     fun createMessage(
         chatId: UUID,
         content: String,
-    ): Result = createDomainObject(
+    ): Message = Message(
         chatId = chatId,
         content = content,
     )
         .checkIfChatExists()
         .storeToDb()
 
-    private fun createDomainObject(
-        chatId: UUID,
-        content: String
-    ): Message.Result = Message(
-        chatId = chatId,
-        content = content,
-    )
-
-    private fun Message.Result.checkIfChatExists(): Result = when (this) {
-        is Message.Created -> {
-            if (chatRefRepository.existsById(chatId = this.message.chatId)) {
-                Created(message = this.message)
-            } else {
-                ChatDoesNotExist(this.message.chatId)
-            }
+    private fun Message.checkIfChatExists(): Message {
+        if (!chatRefRepository.existsById(chatId = this.chatId)) {
+            throw ChatDoesNotExistException(chatId = this.chatId)
         }
 
-        is Message.Error -> CreationError(msg = this.msg)
+        return this
     }
 
-    private fun Result.storeToDb(): Result = when (this) {
-        is Created -> {
-            messageRepository.store(message = this.message)
-            this
-        }
+    private fun Message.storeToDb(): Message {
+        messageRepository.store(message = this)
 
-        else -> this
+        return this
     }
-
-    sealed class Result
-    class Created(val message: Message) : Result()
-    class CreationError(val msg: String) : Result()
-    class ChatDoesNotExist(val chatId: UUID) : Result()
 }

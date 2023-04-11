@@ -62,14 +62,5 @@ internal class ChatRepositoryImplTest : AbstractDatabaseTest() {
             result shouldHaveSize 1
             result[0] shouldBeEqualTo aTestChat()
         }
-
-        @Test
-        fun `with bad name`() {
-            chatJpaRepository.save(aTestChatEntity(name = ""))
-
-            shouldThrow<ClassCastException> {
-                chatRepositoryImplToTest.findAll()
-            }
-        }
     }
 }

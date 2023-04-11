@@ -30,9 +30,9 @@ class ChatRepositoryImpl(private val chatJpaRepository: ChatJpaRepository) : Cha
 
     private fun List<ChatEntity>.mapToDomain(): List<Chat> = this
         .map {
-            (Chat(
+            Chat(
                 id = it.id,
                 name = it.name,
-            ) as Chat.Created).chat
+            )
         }
 }

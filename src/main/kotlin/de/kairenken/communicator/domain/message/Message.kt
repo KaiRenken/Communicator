@@ -18,20 +18,16 @@ class Message private constructor(
             id: UUID = UUID.randomUUID(),
             chatId: UUID,
             content: String,
-        ): Result = try {
-            Created(
-                Message(
-                    id = id,
-                    chatId = chatId,
-                    content = content,
-                )
+        ): Message = try {
+            Message(
+                id = id,
+                chatId = chatId,
+                content = content,
             )
         } catch (exception: IllegalArgumentException) {
-            Error(exception.message!!)
+            throw MessageInstantiationException(msg = exception.message!!)
         }
     }
-
-    sealed class Result
-    class Created(val message: Message) : Result()
-    class Error(val msg: String) : Result()
 }
+
+class MessageInstantiationException(val msg: String) : Exception()
